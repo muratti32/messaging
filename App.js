@@ -63,7 +63,7 @@ const App = () => {
     const initialLoginValue = {
       userToken : null,
       isLoading : true,
-      userName : null
+      userName : null,
     }
 
     const loginReducer = (prevState, action) => {
@@ -99,17 +99,9 @@ const App = () => {
     const [loginState,dispatch] = useReducer(loginReducer,initialLoginValue)
 
     const authContext = useMemo(() => ({
-      signIn : (userName,password) => {
-        let userToken = null
-        if(isUserExist(userName,password)){
-          userToken="asdf"
-          console.log(userName,password,"halo2")
-          storeToken(userToken)
-        }
+      signIn : (userName,password,userToken) => {
+        storeToken(userToken)
         dispatch({type:types.REGISTER, userName: 'user', userToken: userToken} )
-        // setToken("sdfsd")
-        // console.log(token)
-        // setIsLoading(false)
       },
       signOut : () => {
         // setToken(null)

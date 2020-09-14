@@ -1,31 +1,29 @@
-import React,{useState,useContext} from 'react'
-import { StyleSheet, View,Dimensions,Image,TouchableOpacity,TextInput,StatusBar} from 'react-native'
+import React,{useState} from 'react'
+import { StyleSheet, View,Dimensions,Image,TouchableOpacity,TextInput,Alert,Platform} from 'react-native'
 import {Headline,Text,useTheme} from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Animatable from 'react-native-animatable'
 import LinearGradient from 'react-native-linear-gradient';
-import {AuthContext} from '../../components/context'
-
+import GoogleButton from './GoogleButton'
+import FaceBookLoginButton from './FaceBookButton'
 
 const SignIn = ({navigation}) => {
     const [email,setEmail] = useState("")
-    const [isValidEmail,setIsValidEmail] = useState(true)
-    const [isValidPassword,setIsValidPassword] = useState(true)
+    const [isValidEmail,setIsValidEmail] = useState(null)
+    const [isValidPassword,setIsValidPassword] = useState(null)
     const [password,setPassword] = useState("")
     const [secureTextEntry,setSecureTextEntry] = useState(false)
 
-    const {signIn} = useContext(AuthContext)
 
     const handleEmail = (text) => {
         setEmail(text)
-        if (validateIsEmail(text)){
-            setIsValidEmail(true)
-            setEmail(text)
-        }
-        else{
-            setEmail("")
-        }
-
+        // if (validateIsEmail(text)){
+        //     setIsValidEmail(true)
+        //     setEmail(text)
+        // }
+        // else{
+        //     setEmail("")
+        // }
     }
     
     const validateIsEmail = (text) => {
@@ -38,7 +36,11 @@ const SignIn = ({navigation}) => {
     }
 
     const handleSignIn = () => {
-        signIn(email,password)
+        if (isValidEmail && isValidPassword){
+            signIn(email,password,"asdf")
+        } else {
+            uyariYap()
+        }
     }
 
     const handleOnEndEditing = () => {
@@ -61,6 +63,12 @@ const SignIn = ({navigation}) => {
         setPassword(text)
     }
     
+    const uyariYap = () => {
+        Alert.alert("Invalid user!","username or password incorrect",[
+            {text: "OKAY"}
+        ])
+    }
+
     const theme = useTheme()
 
 
@@ -98,7 +106,7 @@ const SignIn = ({navigation}) => {
                         }
                     </View>
                     {
-                        !isValidEmail && (
+                        (isValidEmail !== null && isValidEmail === false) && (
                             <Animatable.View animation="fadeInLeft" duration={500}>
                                 <Text style={styles.errorMsg}>user name must be valid email</Text>
                             </Animatable.View>
@@ -126,7 +134,7 @@ const SignIn = ({navigation}) => {
                         </TouchableOpacity>
                     </View>
                     {
-                        !isValidPassword ? (
+                        (isValidPassword !== null && isValidPassword === false ) ? (
                             <Animatable.View animation="fadeInLeft" duration={500}>
                                 <Text style={styles.errorMsg}>password minimum length is 4 characters</Text>
                             </Animatable.View>
@@ -154,7 +162,10 @@ const SignIn = ({navigation}) => {
                             color:"#009387"
                         }]}>Sign up</Text>
                 </TouchableOpacity>
+                
+                <GoogleButton  style={{ marginTop:15}} />
 
+                <FaceBookLoginButton />
             </Animatable.View>
         </View>
     )

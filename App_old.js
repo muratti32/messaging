@@ -24,7 +24,7 @@ const App = () => {
       forceCodeForRefreshToken: true,
     });
 
-   // getCurrentUserInfo()
+  // getCurrentUserInfo()
     checkIsSignedIn()
   },[])
 
@@ -99,7 +99,7 @@ const App = () => {
           textStyle={styles.spinnerTextStyle}
         />
 
-     
+    
       <Text>isSignedIn : {isSignedIn?"true":"false"}</Text>
       {
         isSignedIn ? (
